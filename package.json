@@ -1,0 +1,31 @@
+{
+  "name": "braum",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.70.0",
+    "file-saver": "^2.0.5",
+    "jschardet": "^3.1.4",
+    "jszip": "^3.10.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "text-encoding": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.7",
+    "@types/node": "^20.6.0",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@types/text-encoding": "^0.0.40",
+    "@vitejs/plugin-react": "^4.0.4",
+    "prettier": "^2.8.8",
+    "sass": "^1.66.1",
+    "typescript": "^4.9.5",
+    "vite": "^4.4.9"
+  }
+}
