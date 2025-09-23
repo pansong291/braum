@@ -281,14 +281,13 @@ const App = () => {
             const [filename, result] = it.value
             const name = removeFileNameExt(filename)
             zip.addAsUTF8(name + '.js', result)
-            console.log('result', result)
           } else {
             const [filename, errors] = it.reason
             const result = errors.length === 1 ? String(errors[0]) : errors.map((it: any) => it.message).join('\n\n')
             zip.addAsUTF8(`[ERR]${filename}.log`, result)
           }
         })
-        // zip.download()
+        zip.download()
       })
       .finally(() => setProcessing(false))
   }
