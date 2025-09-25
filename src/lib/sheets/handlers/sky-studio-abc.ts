@@ -5,8 +5,8 @@ import { CHAR_0, CHAR_A } from '@/lib/sheets/utils/lang'
 
 export const skyStudioAbcLabel = 'sky-studio-abc'
 
-export const skyStudioAbcFormatter = (): MusicFormatter => {
-  return function (mn) {
+export const skyStudioAbcFormatter = (): MusicFormatter =>
+  function (mn) {
     // 计算所有分母的最大公约数
     let lcm = 1
     mn.beats.forEach((it) => {
@@ -14,7 +14,7 @@ export const skyStudioAbcFormatter = (): MusicFormatter => {
     })
     const bpm = mn.bpm * lcm
     if (!Number.isSafeInteger(bpm)) throw EvalError('Unsafe bpm: ' + bpm)
-    let firstLine = `<DontCopyThisLine> ${bpm} ${mn.keyNote % 12} ${16} ${mn.author} ${mn.transcribedBy}`
+    let firstLine = `<DontCopyThisLine> ${bpm} ${mn.keyNote % 12} 16 ${mn.author} ${mn.transcribedBy}`
     let secondLine = ''
     mn.beats.forEach((beat) => {
       const dotCount = new Rate(beat.rate.a * lcm, beat.rate.b).simplify().a - 1
@@ -23,7 +23,7 @@ export const skyStudioAbcFormatter = (): MusicFormatter => {
         beat.tones.forEach((it) => {
           const note = tet12ToBasicNote(it)
           if (note < 0 || note > 14) throw RangeError('Unknown note: ' + note)
-          secondLine += String.fromCharCode(Math.floor(note / 5) + 65) + ((note % 5) + 1)
+          secondLine += String.fromCharCode(Math.floor(note / 5) + CHAR_A) + ((note % 5) + 1)
         })
         secondLine += ' '
         if (dotCount) secondLine += '. '.repeat(dotCount)
@@ -33,7 +33,6 @@ export const skyStudioAbcFormatter = (): MusicFormatter => {
     })
     return firstLine + '\n' + secondLine
   }
-}
 
 export const skyStudioAbcParser = (): MusicParser => {
   const helper = {

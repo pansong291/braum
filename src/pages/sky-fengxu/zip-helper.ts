@@ -27,8 +27,6 @@ export class ZipHelper {
   }
 
   download() {
-    this.zip.generateAsync({ type: 'blob' }).then(function (content) {
-      saveAs(content, 'archive.zip')
-    })
+    this.zip.generateAsync({ type: 'blob' }).then((content) => saveAs(content, 'archive.zip'))
   }
 }

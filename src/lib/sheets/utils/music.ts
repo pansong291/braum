@@ -137,6 +137,6 @@ export const parseKeyLayout = (kl: string): KeyLayout => {
   const klObj = JSON.parse(kl)
   if (!Array.isArray(klObj.keys)) throw TypeError('"keys" must be an array')
   if (!Number.isInteger(klObj.keyOffset)) throw TypeError('"keyOffset" must be an integer')
-  if (klObj.semitone !== true && klObj.semitone !== false) throw TypeError('"semitone" must be a boolean')
+  if (typeof klObj.semitone !== 'boolean') throw TypeError('"semitone" must be a boolean')
   return new KeyLayout(klObj.keys, klObj.keyOffset, klObj.semitone)
 }

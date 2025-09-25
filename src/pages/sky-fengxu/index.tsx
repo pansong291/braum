@@ -9,13 +9,8 @@ import { skyStudioAbcLabel, skyStudioAbcParser } from '@/lib/sheets/handlers/sky
 import { fengxuGenshin2Formatter, fengxuGenshin2Label } from '@/lib/sheets/handlers/fengxu-genshin-2'
 import { TextDecoder } from 'text-encoding'
 
-// @ts-ignore
-window.TextEncoder = null
-// @ts-ignore
-window.TextDecoder = null
-
-const readFile = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
+const readFile = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
     // 处理二进制文件
     if (!file.type.startsWith('text/') && file.type !== '') {
       reject(new TypeError('非文本文件内容'))
@@ -41,7 +36,6 @@ const readFile = (file: File): Promise<string> => {
     reader.onerror = (e) => reject(e.target?.error)
     reader.readAsArrayBuffer(file)
   })
-}
 
 const removeFileNameExt = (str: string): string => {
   let idx = str.lastIndexOf('.yp.txt')
@@ -143,33 +137,11 @@ const useStyles = makeStyles({
     gap: '24px',
     padding: '24px'
   },
-  fileDropArea: {
-    height: '200px',
-    border: `2px dashed ${tokens.colorNeutralStroke1}`,
-    borderRadius: '8px',
-    textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    '--braum-file-drop-info-color': tokens.colorNeutralStroke1Pressed,
-    ':hover': {
-      backgroundColor: tokens.colorBrandBackground2Hover,
-      ...shorthands.borderColor(tokens.colorBrandBackground),
-      '--braum-file-drop-info-color': tokens.colorBrandBackground
-    }
-  },
-  fileDropInfo: {
-    color: 'var(--braum-file-drop-info-color)',
-    transition: 'color 0.3s ease'
-  },
   fileChooseButton: {
     height: '200px',
     color: tokens.colorNeutralStroke1Pressed,
     border: `2px dashed ${tokens.colorNeutralStroke1}`,
-    ...shorthands.transition('color border-color background-color', '0.3s'),
+    transition: 'all 0.3s',
     ':hover': {
       color: tokens.colorBrandBackground,
       backgroundColor: tokens.colorBrandBackground2Hover,
@@ -267,6 +239,7 @@ const App = () => {
             } catch (e) {
               if (!tooMuch) setOutputText((p) => p + `${file.name} -- 转换失败 ${e}\n\n`)
               const errors = e instanceof AggregateError ? e.errors : [e]
+              console.error(file.name, errors)
 
               reject([file.name, errors])
             }

@@ -212,10 +212,11 @@ export const fengxuGenshin2Parser = (): MusicParser => {
   }
 
   return function (str) {
-    helper.result = null
     const func = new Function(helper.funcName, str)
     func.call(null, parseGenshinImpactMusic)
-    if (!helper.result) throw SyntaxError('Unknown error')
-    return helper.result
+    const result = helper.result
+    if (!result) throw SyntaxError('Unknown error')
+    helper.result = null
+    return result
   }
 }

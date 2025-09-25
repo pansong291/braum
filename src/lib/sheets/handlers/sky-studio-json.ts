@@ -65,16 +65,13 @@ export const skyStudioJsonParser = (): MusicParser => {
       checkBpm(skyJson.bpm)
     )
     const songNotes = helper.checkSongNotes(skyJson.songNotes)
-    /** @type {{time: number, keys: number[]}[]} */
     const beats = Object.values(
       // 按时间分组，相同时间的 key 构成和弦
       groupBy(songNotes, (it) => helper.checkNoteTime(it.time))
-    ).map((arr) => {
-      return {
-        time: arr[0].time,
-        keys: arr.map((it) => helper.checkKeyIndex(it.key.split('Key')[1]))
-      }
-    })
+    ).map((arr) => ({
+      time: arr[0].time,
+      keys: arr.map((it) => helper.checkKeyIndex(it.key.split('Key')[1]))
+    }))
     insertionSort(beats, (a, b) => a.time < b.time)
 
     let lastBeat = new Beat(new Rate(0, 60_000))
