@@ -17,7 +17,7 @@ const entryAlias: Record<string, string> = {
 // 动态获取多页面入口函数
 const entryRules = (() => {
   const baseDir = resolve(__dirname, 'src/pages')
-  const entries: Entry[] = [{ key: 'index', path: resolve(__dirname, 'index.html') }]
+  const entries: Entry[] = []
   try {
     // 遍历 pages 目录
     const items = readdirSync(baseDir)
