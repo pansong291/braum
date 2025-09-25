@@ -223,9 +223,9 @@ const App = () => {
   }
 
   const startConvert = () => {
-    const tooMuch = fileList.length > 1000
+    const tooMuch = fileList.length > 100
     setProcessing(true)
-    setOutputText(tooMuch ? '文件数量过多，请耐心等待...\n\n' : '')
+    setOutputText(tooMuch ? '文件数量较多，请耐心等待...\n\n' : '')
     Promise.allSettled(
       fileList.map(
         (file) =>
@@ -257,7 +257,7 @@ const App = () => {
           } else {
             const [filename, errors] = it.reason
             const result = errors.length === 1 ? String(errors[0]) : errors.map((it: any) => it.message).join('\n\n')
-            zip.addAsUTF8(`[ERR]${filename}.log`, result)
+            zip.addAsUTF8(`[ERR] ${filename}.log`, result)
           }
         })
         zip.download()
