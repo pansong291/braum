@@ -42,6 +42,7 @@ const entryRules = (() => {
 })()
 
 const entryInput = entryRules.reduce((p, v) => {
+  // 优先使用别名作为入口
   p[v.alias || v.key] = v.path
   return p
 }, {})
@@ -95,10 +96,9 @@ function flattenOutput(): PluginOption {
         if (typeof output === 'object' && output.fileName?.endsWith('.html')) {
           const exeArr = reg.exec(output.fileName)
           const folder = exeArr?.[1]
-          const alias = entryAlias[folder]
-          if (folder && alias) {
+          if (folder) {
             // 去掉 pages 目录层级并替换为别名
-            output.fileName = output.fileName.replace(exeArr[0], alias)
+            output.fileName = output.fileName.replace(exeArr[0], entryAlias[folder] || folder)
           }
         }
       }
@@ -127,7 +127,7 @@ export default defineConfig({
       output: {
         entryFileNames: (chunkInfo) => {
           if (chunkInfo.isEntry) return '[name]/[hash].js'
-          else return 'chunk-[name]-[hash].js'
+          else return 'asset/chunk-[name]-[hash].js'
         },
         assetFileNames: 'asset/[name]-[hash].[ext]'
       }
