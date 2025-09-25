@@ -69,7 +69,7 @@ function mpaHistoryFallbackPlugin(): PluginOption {
           }
           if (req.url === rule.key) {
             // 当访问无斜杠结尾的目录时，需要补充斜杠并引导浏览器重定向
-            res.writeHead(301, { Location: originUrl + '/' })
+            res.writeHead(308, { Location: originUrl + '/' })
             res.end()
             return
           } else if (req.url.startsWith(rule.key)) {
