@@ -8,6 +8,7 @@ import { skyStudioJsonLabel, skyStudioJsonParser } from '@/lib/sheets/handlers/s
 import { skyStudioAbcLabel, skyStudioAbcParser } from '@/lib/sheets/handlers/sky-studio-abc'
 import { fengxuGenshin2Formatter, fengxuGenshin2Label } from '@/lib/sheets/handlers/fengxu-genshin-2'
 import { TextDecoder } from 'text-encoding'
+import GoofishBanner from '@/components/GoofishBanner'
 
 const readFile = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -272,6 +273,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
+      <GoofishBanner />
       <input type="file" ref={fileInputRef} hidden multiple onChange={handleFiles} />
       <Button
         as="button"
