@@ -62,21 +62,24 @@ function mpaHistoryFallbackPlugin(): PluginOption {
     configureServer(server) {
       // 添加一个中间件到 Vite 开发服务器
       server.middlewares.use((req, res, next) => {
-        for (const rule of entryRules) {
-          const originUrl = req.url
-          if (originUrl.startsWith(rule.alias)) {
-            req.url = originUrl.replace(rule.alias, rule.key)
+        if (req.url === '/') {
+          req.url = '/index.html'
+        } else
+          for (const rule of entryRules) {
+            const originUrl = req.url
+            if (originUrl.startsWith(rule.alias)) {
+              req.url = originUrl.replace(rule.alias, rule.key)
+            }
+            if (req.url === rule.key) {
+              // 当访问无斜杠结尾的目录时，需要补充斜杠并引导浏览器重定向
+              res.writeHead(308, { Location: originUrl + '/' })
+              res.end()
+              return
+            } else if (req.url.startsWith(rule.key)) {
+              req.url = '/src/pages' + req.url // 重写请求的 URL
+              break
+            }
           }
-          if (req.url === rule.key) {
-            // 当访问无斜杠结尾的目录时，需要补充斜杠并引导浏览器重定向
-            res.writeHead(308, { Location: originUrl + '/' })
-            res.end()
-            return
-          } else if (req.url.startsWith(rule.key)) {
-            req.url = '/src/pages' + req.url // 重写请求的 URL
-            break
-          }
-        }
         next() // 继续处理请求
       })
     }
