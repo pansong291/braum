@@ -7,7 +7,7 @@ export const skyStudioAbcLabel = 'sky-studio-abc'
 
 export const skyStudioAbcFormatter = (): MusicFormatter =>
   function (mn) {
-    // 计算所有分母的最大公约数
+    // 计算所有分母的最小公倍数，即通分所需的最简公分母
     let lcm = 1
     mn.beats.forEach((it) => {
       lcm *= new Rate(it.rate.a * lcm, it.rate.b).simplify().b

@@ -18,12 +18,13 @@ export class Rate {
   b: number
 
   constructor(a = 1, b = 1) {
+    if (b === 0) throw new RangeError('The denominator cannot be zero')
     this.a = a
     this.b = b
   }
 
+  /** 求最大公约数并化简此分数 */
   simplify(): Rate {
-    // 求最大公约数并化简此分数
     let big = Math.max(this.a, this.b)
     let small = Math.min(this.a, this.b)
     while (small) {
