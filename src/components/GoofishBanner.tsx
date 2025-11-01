@@ -13,10 +13,14 @@ const useStyles = makeStyles({
   }
 })
 
-const GoofishBanner = () => {
+const GoofishBanner = (props: { preview?: boolean }) => {
   const styles = useStyles()
 
-  return (
+  return import.meta.env.DEV && !props.preview ? (
+    <div className={styles.bannerWrapper}>
+      <div style={{ maxWidth: 500, aspectRatio: '500/299', flexGrow: 1, boxSizing: 'border-box', border: '1px solid black' }}></div>
+    </div>
+  ) : (
     <a className={styles.bannerWrapper} title="访问作者主页" href="https://pages.goofish.com/sharexy?userid=2MD4vBvIuKpQj29vC%2BmdsA%3D%3D">
       <img
         className={styles.imageBanner}
