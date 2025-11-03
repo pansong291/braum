@@ -14,6 +14,7 @@ import {
   Label,
   Link,
   makeStyles,
+  tokens,
   useId,
   useRestoreFocusTarget,
   webLightTheme
@@ -35,6 +36,15 @@ const useStyles = makeStyles({
     alignItems: 'center',
     gap: '12px',
     flexWrap: 'wrap'
+  },
+  input: {
+    fontFamily: tokens.fontFamilyMonospace
+  },
+  ol: {
+    marginBlock: '0',
+    paddingBlock: '1em',
+    borderRadius: tokens.borderRadiusMedium,
+    boxShadow: tokens.shadow8
   }
 })
 
@@ -43,12 +53,15 @@ const App = () => {
   const [text, setText] = useState('')
   const [link, setLink] = useState('')
   const [openAlert, setOpenAlert] = useState(false)
-  const [failedMsg, setFailedMsg] = useState('')
+  const [alertTitle, setAlertTitle] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
+  const [openTutorial, setOpenTutorial] = useState(false)
   const okFocusRestore = useRestoreFocusTarget()
   const inputId = useId('input')
 
-  const alert = (msg: string) => {
-    setFailedMsg(msg)
+  const alert = (msg: string, title: string = '错误') => {
+    setAlertTitle(title)
+    setAlertMessage(msg)
     setOpenAlert(true)
   }
 
@@ -68,31 +81,45 @@ const App = () => {
     }
   }
 
+  const onFirstLinkClick = () => {
+    window.open('/APe2vddKooc/', '_blank', 'noreferrer')
+    alert('请仔细查看视频教程，以免下载过程中出现问题。', '注意')
+    setOpenTutorial(true)
+  }
+
+  const onSecondLinkClick = () => {
+    if (openTutorial) {
+      window.open(link, '_blank', 'noreferrer')
+    } else {
+      alert('请按照顺序操作！')
+    }
+  }
+
   return (
     <div className={styles.container}>
       <GoofishBanner />
       <div className={styles.main}>
         <Label htmlFor={inputId}>请输入认证码</Label>
-        <Input id={inputId} value={text} onChange={(_, d) => setText(d.value)} />
+        <Input id={inputId} className={styles.input} spellCheck={false} value={text} onChange={(_, d) => setText(d.value)} />
         <Button as="button" appearance="primary" onClick={onOkClick} {...okFocusRestore}>
           确定
         </Button>
       </div>
       {link && (
-        <ol>
+        <ol className={styles.ol}>
           <li>
-            <Link href="https://v.douyin.com/APe2vddKooc/">请先点击此链接</Link>
+            <Link onClick={onFirstLinkClick}>请先点击此链接</Link>
           </li>
           <li>
-            <Link href={link}>再点击此链接</Link>
+            <Link onClick={onSecondLinkClick}>再点击此链接</Link>
           </li>
         </ol>
       )}
       <Dialog modalType="alert" open={openAlert} onOpenChange={(_, d) => setOpenAlert(d.open)}>
         <DialogSurface>
           <DialogBody>
-            <DialogTitle>错误</DialogTitle>
-            <DialogContent>{failedMsg}</DialogContent>
+            <DialogTitle>{alertTitle}</DialogTitle>
+            <DialogContent>{alertMessage}</DialogContent>
             <DialogActions>
               <DialogTrigger disableButtonEnhancement>
                 <Button as="button" appearance="secondary">
