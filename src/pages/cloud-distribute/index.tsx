@@ -82,7 +82,7 @@ const App = () => {
   }
 
   const onFirstLinkClick = () => {
-    window.open('/APe2vddKooc/', '_blank', 'noreferrer')
+    window.open('https://v.douyin.com/APe2vddKooc/', '_blank', 'noreferrer')
     alert('请仔细查看视频教程，以免下载过程中出现问题。', '注意')
     setOpenTutorial(true)
   }
