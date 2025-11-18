@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { StrictMode, useMemo, useState } from 'react'
-import { FluentProvider, Label, makeStyles, Textarea, useId, webLightTheme } from '@fluentui/react-components'
+import { FluentProvider, Label, makeStyles, Textarea, tokens, useId, webLightTheme } from '@fluentui/react-components'
 import { toCode } from '@/lib/pan123'
 
 const useStyles = makeStyles({
@@ -13,9 +13,23 @@ const useStyles = makeStyles({
     padding: '24px'
   },
   pre: {
-    fontFamily: 'monospace'
+    fontFamily: tokens.fontFamilyMonospace
   }
 })
+
+const parseParams = (url: string): Record<string, string> => {
+  const map: Record<string, string> = Object.create(null)
+  const start = url.indexOf('?') + 1
+  if (!start) return map
+  url
+    .substring(start)
+    .split('&')
+    .forEach((p) => {
+      const entry = p.split('=')
+      map[entry[0]] = entry[1]
+    })
+  return map
+}
 
 const App = () => {
   const styles = useStyles()
@@ -27,12 +41,12 @@ const App = () => {
       .split('\n')
       .map((it) => {
         try {
-          return toCode(it)
+          return `\n"${toCode(it)}", "${parseParams(it).pwd}", "${it}"`
         } catch (e) {
           return ''
         }
       })
-      .join('\n')
+      .join('')
   }, [text])
 
   return (
@@ -40,7 +54,9 @@ const App = () => {
       <Label htmlFor={inputId}>请在下方填入链接</Label>
       <Textarea
         id={inputId}
-        style={{ fontFamily: 'monospace' }}
+        textarea={{ className: styles.pre }}
+        rows={10}
+        spellCheck={false}
         value={text}
         onChange={(_, d) => setText(d.value)}
         placeholder="一行一个"
