@@ -84,8 +84,51 @@ function reverse(str: string): string {
   return result
 }
 
+function obscure(): number {
+  // 生僻字范围：13312-19903，取 14000-19000 做基底
+  return Math.floor(Math.random() * 6 + 14) * 1000
+}
+
+function impurity(): string {
+  // 随机范围取 128-900，不能超出 903，因为最大是 19903
+  return String.fromCharCode(obscure() + Math.floor(Math.random() * (900 - 128) + 128))
+}
+
+function obfuscate(str: string): string {
+  let result = ''
+  for (let ch of str) {
+    const i = sequence.indexOf(ch, 62)
+    if (i >= 0 || Math.random() < 0.4) {
+      result += String.fromCharCode(obscure() + ch.charCodeAt(0))
+    } else {
+      result += ch
+    }
+    if (Math.random() < 0.2) {
+      result += impurity()
+    }
+  }
+  if (result.charCodeAt(result.length - 1) < 128) {
+    result += impurity()
+  }
+  if (result.charCodeAt(0) < 128) {
+    result = impurity() + result
+  }
+  return result
+}
+
+function deobfuscate(str: string): string {
+  let result = ''
+  for (let ch of str) {
+    const c = ch.charCodeAt(0) % 1000
+    if (c < 128) {
+      result += String.fromCharCode(c)
+    }
+  }
+  return result
+}
+
 export function toURL(code: string): string {
-  const data = reverse(verify(code))
+  const data = reverse(verify(deobfuscate(code)))
   return linkPrefixes[0] + data
 }
 
@@ -96,7 +139,7 @@ export function toCode(url: string): string {
       const code = url.substring(p.length)
       const mArr = code.match(reg)
       if (mArr) {
-        return sign(reverse(mArr[0]))
+        return obfuscate(sign(reverse(mArr[0])))
       }
     }
   }
