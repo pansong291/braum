@@ -14,6 +14,7 @@ import {
   Label,
   Link,
   makeStyles,
+  mergeClasses,
   tokens,
   useId,
   useRestoreFocusTarget,
@@ -40,11 +41,17 @@ const useStyles = makeStyles({
   input: {
     fontFamily: tokens.fontFamilyMonospace
   },
-  ol: {
+  card: {
     marginBlock: '0',
     paddingBlock: '1em',
     borderRadius: tokens.borderRadiusMedium,
     boxShadow: tokens.shadow8
+  },
+  centerBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingInline: '2em'
   }
 })
 
@@ -106,7 +113,7 @@ const App = () => {
         </Button>
       </div>
       {link && (
-        <ol className={styles.ol}>
+        <ol className={styles.card}>
           <li>
             <Link onClick={onFirstLinkClick}>请先点击此链接</Link>
           </li>
@@ -114,6 +121,12 @@ const App = () => {
             <Link onClick={onSecondLinkClick}>再点击此链接</Link>
           </li>
         </ol>
+      )}
+      {openTutorial && (
+        <div>
+          <h2>加密文件的密码</h2>
+          <div className={mergeClasses(styles.centerBox, styles.card)}>闲鼜鱼鑈号嘜我衟昨勱天彀就顴是檟这鼶么臩说韷的</div>
+        </div>
       )}
       <Dialog modalType="alert" open={openAlert} onOpenChange={(_, d) => setOpenAlert(d.open)}>
         <DialogSurface>
