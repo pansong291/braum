@@ -21,8 +21,9 @@ const parseParams = (url: string): Record<string, string> => {
   const map: Record<string, string> = Object.create(null)
   const start = url.indexOf('?') + 1
   if (!start) return map
+  const end = url.indexOf('#', start)
   url
-    .substring(start)
+    .substring(start, end < 0 ? undefined : end)
     .split('&')
     .forEach((p) => {
       const entry = p.split('=')
