@@ -97,21 +97,10 @@ function impurity(): string {
 function obfuscate(str: string): string {
   let result = ''
   for (let ch of str) {
-    const i = sequence.indexOf(ch, 62)
-    if (i >= 0 || Math.random() < 0.4) {
-      result += String.fromCharCode(obscure() + ch.charCodeAt(0))
-    } else {
-      result += ch
-    }
+    result += String.fromCharCode(obscure() + ch.charCodeAt(0))
     if (Math.random() < 0.2) {
       result += impurity()
     }
-  }
-  if (result.charCodeAt(result.length - 1) < 128) {
-    result += impurity()
-  }
-  if (result.charCodeAt(0) < 128) {
-    result = impurity() + result
   }
   return result
 }
