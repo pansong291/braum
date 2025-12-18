@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { StrictMode, useState } from 'react'
+import { ReactNode, StrictMode, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -38,6 +38,9 @@ const useStyles = makeStyles({
     gap: '12px',
     flexWrap: 'wrap'
   },
+  label: {
+    marginInlineEnd: '12px'
+  },
   input: {
     fontFamily: tokens.fontFamilyMonospace
   },
@@ -57,31 +60,37 @@ const useStyles = makeStyles({
 
 const App = () => {
   const styles = useStyles()
-  const [text, setText] = useState('')
+  const [authText, setAuthText] = useState('')
+  const [pickText, setPickText] = useState('')
   const [link, setLink] = useState('')
   const [openAlert, setOpenAlert] = useState(false)
-  const [alertTitle, setAlertTitle] = useState('')
-  const [alertMessage, setAlertMessage] = useState('')
+  const [alertTitle, setAlertTitle] = useState<ReactNode>('')
+  const [alertMessage, setAlertMessage] = useState<ReactNode>('')
   const [openTutorial, setOpenTutorial] = useState(false)
   const okFocusRestore = useRestoreFocusTarget()
-  const inputId = useId('input')
+  const authInputId = useId('auth-input')
+  const pickInputId = useId('pick-input')
 
-  const alert = (msg: string, title: string = '错误') => {
+  const alert = (msg: ReactNode, title: ReactNode = '错误') => {
     setAlertTitle(title)
     setAlertMessage(msg)
     setOpenAlert(true)
   }
 
   const onOkClick = () => {
-    if (!text) {
+    if (!authText) {
       alert('认证码不能为空')
       return
     }
-    const code = text.trim()
     try {
-      if (code.length <= 2) throw new Error()
-      setLink(toURL(code))
-      setText('')
+      const auth = authText.trim()
+      if (auth.length <= 2) throw new Error()
+      let url = toURL(auth)
+      const pick = pickText.trim()
+      if (pick) url += `?pwd=${pick}`
+      setLink(url)
+      setAuthText('')
+      setPickText('')
     } catch (e) {
       alert('认证码不正确')
       setLink('')
@@ -106,8 +115,18 @@ const App = () => {
     <div className={styles.container}>
       <GoofishBanner />
       <div className={styles.main}>
-        <Label htmlFor={inputId}>请输入认证码</Label>
-        <Input id={inputId} className={styles.input} spellCheck={false} value={text} onChange={(_, d) => setText(d.value)} />
+        <div>
+          <Label htmlFor={authInputId} className={styles.label}>
+            认证码
+          </Label>
+          <Input id={authInputId} className={styles.input} spellCheck={false} value={authText} onChange={(_, d) => setAuthText(d.value)} />
+        </div>
+        <div>
+          <Label htmlFor={pickInputId} className={styles.label}>
+            提取码
+          </Label>
+          <Input id={pickInputId} className={styles.input} spellCheck={false} value={pickText} onChange={(_, d) => setPickText(d.value)} />
+        </div>
         <Button as="button" appearance="primary" onClick={onOkClick} {...okFocusRestore}>
           确定
         </Button>
