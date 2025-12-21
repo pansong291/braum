@@ -1,6 +1,6 @@
 const sequence = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~-_.#'
 
-const linkPrefixes = ['https://www.123912.com/s/', 'https://www.123684.com/s/', 'https://www.123865.com/s/']
+const linkPrefixes = ['https://pan.baidu.com/s/']
 
 function charToValue(ch: string): number {
   if (ch) {
@@ -98,7 +98,7 @@ function obfuscate(str: string): string {
   let result = ''
   for (let ch of str) {
     result += String.fromCharCode(obscure() + ch.charCodeAt(0))
-    if (Math.random() < 0.2) {
+    if (Math.random() < 0.05) {
       result += impurity()
     }
   }

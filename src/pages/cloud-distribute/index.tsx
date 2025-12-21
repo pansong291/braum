@@ -20,7 +20,7 @@ import {
   useRestoreFocusTarget,
   webLightTheme
 } from '@fluentui/react-components'
-import { toURL } from '@/lib/pan123'
+import { toURL } from '@/lib/pan'
 import GoofishBanner from '@/components/GoofishBanner'
 
 const useStyles = makeStyles({

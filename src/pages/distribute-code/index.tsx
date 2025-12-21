@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { StrictMode, useMemo, useState } from 'react'
 import { FluentProvider, Label, makeStyles, Textarea, tokens, useId, webLightTheme } from '@fluentui/react-components'
-import { toCode } from '@/lib/pan123'
+import { toCode } from '@/lib/pan'
 
 const useStyles = makeStyles({
   container: {
