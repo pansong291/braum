@@ -132,14 +132,17 @@ const App = () => {
         </Button>
       </div>
       {link && (
-        <ol className={styles.card}>
-          <li>
-            <Link onClick={onFirstLinkClick}>请先点击此链接</Link>
-          </li>
-          <li>
-            <Link onClick={onSecondLinkClick}>再点击此链接</Link>
-          </li>
-        </ol>
+        <div>
+          <h2>恭喜你解锁了以下内容</h2>
+          <ol className={styles.card}>
+            <li>
+              <Link onClick={onFirstLinkClick}>请先点击此链接</Link>
+            </li>
+            <li>
+              <Link onClick={onSecondLinkClick}>再点击此链接</Link>
+            </li>
+          </ol>
+        </div>
       )}
       {openTutorial && (
         <div>
