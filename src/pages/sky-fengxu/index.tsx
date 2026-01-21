@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { FluentProvider, makeStyles, webLightTheme, tokens, Button, Badge, shorthands } from '@fluentui/react-components'
 import { detect } from 'jschardet'
 import { ZipHelper } from '@/pages/sky-fengxu/zip-helper'
-import { MusicConvertor } from '@/lib/sheets'
+import { FormatOptions, MusicConvertor } from '@/lib/sheets'
 import { skyStudioJsonLabel, skyStudioJsonParser } from '@/lib/sheets/handlers/sky-studio-json'
 import { skyStudioAbcLabel, skyStudioAbcParser } from '@/lib/sheets/handlers/sky-studio-abc'
 import { fengxuGenshin2Formatter, fengxuGenshin2Label } from '@/lib/sheets/handlers/fengxu-genshin-2'
@@ -180,6 +180,11 @@ const useStyles = makeStyles({
   }
 })
 
+const formatOption: FormatOptions = {
+  keyLayout:
+    '{"keys":["{C2}","{D2}","{E2}","{F2}","{G2}","{A3}","{B3}","{C3}","{D3}","{E3}","{F3}","{G3}","{A4}","{B4}","{C4}"],"keyOffset":0,"semitone":false}'
+}
+
 const App = () => {
   const styles = useStyles()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -241,7 +246,7 @@ const App = () => {
           new Promise<[string, string]>(async (resolve, reject) => {
             try {
               const content = await readFile(file)
-              const converted = await musicConvertor.convert(fengxuGenshin2Label, content)
+              const converted = await musicConvertor.convert(fengxuGenshin2Label, content, { format: formatOption })
               if (!tooMuch) setOutputText((p) => p + `${file.name} -- 转换成功\n\n`)
 
               resolve([file.name, converted])
