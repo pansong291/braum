@@ -22,6 +22,7 @@ import {
 } from '@fluentui/react-components'
 import { toURL } from '@/lib/pan'
 import GoofishBanner from '@/components/GoofishBanner'
+import AntiDevtool from '@/components/AntiDevtool'
 
 const useStyles = makeStyles({
   container: {
@@ -171,8 +172,10 @@ const App = () => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <FluentProvider theme={webLightTheme}>
-      <App />
-    </FluentProvider>
+    <AntiDevtool>
+      <FluentProvider theme={webLightTheme}>
+        <App />
+      </FluentProvider>
+    </AntiDevtool>
   </StrictMode>
 )

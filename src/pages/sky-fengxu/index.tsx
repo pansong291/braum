@@ -9,6 +9,7 @@ import { skyStudioAbcLabel, skyStudioAbcParser } from '@/lib/sheets/handlers/sky
 import { fengxuGenshin2Formatter, fengxuGenshin2Label } from '@/lib/sheets/handlers/fengxu-genshin-2'
 import { TextDecoder } from 'text-encoding'
 import GoofishBanner from '@/components/GoofishBanner'
+import AntiDevtool from '@/components/AntiDevtool'
 
 const readFile = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -317,8 +318,10 @@ const App = () => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <FluentProvider theme={webLightTheme}>
-      <App />
-    </FluentProvider>
+    <AntiDevtool>
+      <FluentProvider theme={webLightTheme}>
+        <App />
+      </FluentProvider>
+    </AntiDevtool>
   </StrictMode>
 )
