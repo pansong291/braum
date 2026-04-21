@@ -2,6 +2,8 @@ import { defineConfig, PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import { readdirSync, statSync } from 'node:fs'
+import viteBundleObfuscator from 'vite-plugin-bundle-obfuscator'
+import { ObfuscatorOptions } from 'javascript-obfuscator'
 
 type Entry = {
   alias?: string
@@ -13,6 +15,50 @@ type Entry = {
 const entryAlias: Record<string, string> = {
   'sky-fengxu': 'a5ebbee14749',
   'cloud-distribute': 'APe2vddKooc'
+}
+
+const obfuscatorOptions: ObfuscatorOptions = {
+  compact: true, // 将代码输出到一行
+  controlFlowFlattening: true, // 启用代码控制流展平
+  controlFlowFlatteningThreshold: 1,
+  deadCodeInjection: true, // 随机插入无效代码块
+  deadCodeInjectionThreshold: 0.5,
+  debugProtection: true, // 无限断点
+  debugProtectionInterval: 100,
+  disableConsoleOutput: true,
+  domainLock: ['braum.dpdns.org', 'braum.pages.dev'],
+  domainLockRedirectUrl: 'about:blank',
+  identifierNamesGenerator: 'hexadecimal', // 生成十六进制标识符
+  ignoreImports: true, // 忽略混淆导入语句
+  log: false,
+  numbersToExpressions: false, // 数字转运算表达式
+  renameGlobals: false, // 重命名全局成员
+  renameProperties: false, // 重命名属性
+  renamePropertiesMode: 'safe',
+  reservedNames: [], // 保留名称
+  reservedStrings: [], // 保留字符串
+  seed: 123, // 设置随机生成器种子
+  selfDefending: true, // 防止代码格式化、防变量重命名
+  simplify: true, // 基于代码简化方式的额外代码混淆处理
+  sourceMap: false,
+  splitStrings: true, // 分割字符串
+  splitStringsChunkLength: 10,
+  stringArray: true, // 将字符串放入一个特殊的数组中
+  stringArrayCallsTransform: true, // 转换对字符串数组的调用
+  stringArrayCallsTransformThreshold: 0.5,
+  stringArrayEncoding: ['rc4'], // 字符串RC4加密
+  stringArrayIndexesType: ['hexadecimal-number'], // 字符串数组调用索引转换
+  stringArrayIndexShift: true, // 字符串数组索引偏移
+  stringArrayRotate: true, // 将字符串数组按照固定偏移量与随机偏移量（代码混淆时生成）进行整体移位
+  stringArrayShuffle: true, // 随机打乱字符串数组内的元素顺序
+  stringArrayWrappersChainedCalls: true, // 字符串数组包装器之间的链式调用
+  stringArrayWrappersCount: 1,
+  stringArrayWrappersParametersMaxCount: 3, // 字符串数组包装器最大参数数量
+  stringArrayWrappersType: 'function', // 字符串数组包装器类型
+  stringArrayThreshold: 0.8,
+  target: 'browser',
+  transformObjectKeys: true, // 将对象键放入一个数组中
+  unicodeEscapeSequence: false // 转为 unicode 序列
 }
 
 // 动态获取多页面入口函数
@@ -113,7 +159,20 @@ function flattenOutput(): PluginOption {
 // https://vitejs.dev/config/
 export default defineConfig({
   // base: './',
-  plugins: [react(), mpaHistoryFallbackPlugin(), flattenOutput()],
+  plugins: [
+    react(),
+    mpaHistoryFallbackPlugin(),
+    flattenOutput(),
+    viteBundleObfuscator({
+      log: false,
+      enable: true,
+      excludes: ['01d96b68.js'],
+      autoExcludeNodeModules: true,
+      apply: 'build',
+      threadPool: true,
+      options: obfuscatorOptions
+    })
+  ],
   resolve: {
     alias: [
       {
@@ -126,15 +185,19 @@ export default defineConfig({
     port: 10987
   },
   build: {
+    minify: 'esbuild', // 最高效压缩
+    sourcemap: false, // 关闭源码映射
     rollupOptions: {
       input: entryInput,
       output: {
-        entryFileNames: (chunkInfo) => {
-          if (chunkInfo.isEntry) return '[name]/[hash].js'
-          else return 'asset/chunk-[name]-[hash].js'
-        },
-        assetFileNames: 'asset/[name]-[hash].[ext]'
+        entryFileNames: '[name]/[hash].js',
+        chunkFileNames: 'assets/[hash].js',
+        assetFileNames: 'assets/[hash].[ext]'
       }
     }
+  },
+  esbuild: {
+    drop: ['console', 'debugger'], // 移除所有console、debugger断点
+    minifyIdentifiers: true // 原生变量压缩
   }
 })
