@@ -67,7 +67,6 @@ const App = () => {
   const [openAlert, setOpenAlert] = useState(false)
   const [alertTitle, setAlertTitle] = useState<ReactNode>('')
   const [alertMessage, setAlertMessage] = useState<ReactNode>('')
-  const [openTutorial, setOpenTutorial] = useState(false)
   const okFocusRestore = useRestoreFocusTarget()
   const authInputId = useId('auth-input')
   const pickInputId = useId('pick-input')
@@ -98,18 +97,8 @@ const App = () => {
     }
   }
 
-  const onFirstLinkClick = () => {
-    window.open('https://v.douyin.com/APe2vddKooc/', '_blank', 'noreferrer')
-    alert('请仔细查看视频教程，以免下载过程中出现问题。', '注意')
-    setOpenTutorial(true)
-  }
-
-  const onSecondLinkClick = () => {
-    if (openTutorial) {
-      window.open(link, '_blank', 'noreferrer')
-    } else {
-      alert('请按照顺序操作！')
-    }
+  const onLinkClick = () => {
+    window.open(link, '_blank', 'noreferrer')
   }
 
   return (
@@ -133,23 +122,20 @@ const App = () => {
         </Button>
       </div>
       {link && (
-        <div>
-          <h2>恭喜你解锁了以下内容</h2>
-          <ol className={styles.card}>
-            <li>
-              <Link onClick={onFirstLinkClick}>请先点击此链接</Link>
-            </li>
-            <li>
-              <Link onClick={onSecondLinkClick}>再点击此链接</Link>
-            </li>
-          </ol>
-        </div>
-      )}
-      {openTutorial && (
-        <div>
-          <h2>加密文件的密码</h2>
-          <div className={mergeClasses(styles.centerBox, styles.card)}>闲鼜鱼鑈号嘜我衟昨勱天彀就顴是檟这鼶么臩说韷的</div>
-        </div>
+        <>
+          <div>
+            <h2>恭喜你解锁了以下内容</h2>
+            <ol className={styles.card}>
+              <li>
+                <Link onClick={onLinkClick}>{link}</Link>
+              </li>
+            </ol>
+          </div>
+          <div>
+            <h2>加密文件的密码</h2>
+            <div className={mergeClasses(styles.centerBox, styles.card)}>闲鼜鱼鑈号嘜我衟昨勱天彀就顴是檟这鼶么臩说韷的</div>
+          </div>
+        </>
       )}
       <Dialog modalType="alert" open={openAlert} onOpenChange={(_, d) => setOpenAlert(d.open)}>
         <DialogSurface>
