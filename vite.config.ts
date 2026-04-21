@@ -156,6 +156,12 @@ function flattenOutput(): PluginOption {
   }
 }
 
+// 除了 a 以外的随机十六进制字符
+function getRandomHexChar() {
+  const ch = Math.floor(Math.random() * 15).toString(16)
+  return ch === 'a' ? 'a' : ch
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   // base: './',
@@ -166,8 +172,8 @@ export default defineConfig({
     viteBundleObfuscator({
       log: false,
       enable: true,
-      excludes: ['01d96b68.js'],
-      autoExcludeNodeModules: true,
+      excludes: [/\/a\w+\.js/], // 排除以 a 开头的
+      autoExcludeNodeModules: false, // 手动分包，这里必须设为 false
       apply: 'build',
       threadPool: true,
       options: obfuscatorOptions
@@ -190,9 +196,19 @@ export default defineConfig({
     rollupOptions: {
       input: entryInput,
       output: {
-        entryFileNames: '[name]/[hash].js',
-        chunkFileNames: 'assets/[hash].js',
-        assetFileNames: 'assets/[hash].[ext]'
+        manualChunks: (id) => {
+          // 单独抽出比较大的库
+          if (id.includes('text-encoding') || id.includes('jschardet')) {
+            return 'my_custom_lib'
+          }
+        },
+        entryFileNames: () => `[name]/${getRandomHexChar()}[hash].js`,
+        chunkFileNames: (chunkInfo) => {
+          // 指定库以 a 开头，后续避免进行混淆
+          if (['FluentProvider', 'my_custom_lib'].includes(chunkInfo.name)) return 'assets/a[hash].js'
+          return `assets/${getRandomHexChar()}[hash].js`
+        },
+        assetFileNames: () => `assets/${getRandomHexChar()}[hash].[ext]`
       }
     }
   },
