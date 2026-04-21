@@ -2,7 +2,7 @@ import { ChangeEvent, DragEvent, StrictMode, useMemo, useRef, useState } from 'r
 import { createRoot } from 'react-dom/client'
 import { FluentProvider, makeStyles, webLightTheme, tokens, Button, Badge, shorthands } from '@fluentui/react-components'
 import { detect } from 'jschardet'
-import { ZipHelper } from '@/pages/sky-fengxu/zip-helper'
+import { ZipHelper } from '@/lib/zip/zip-helper'
 import { FormatOptions, MusicConvertor } from '@/lib/sheets'
 import { skyStudioJsonLabel, skyStudioJsonParser } from '@/lib/sheets/handlers/sky-studio-json'
 import { skyStudioAbcLabel, skyStudioAbcParser } from '@/lib/sheets/handlers/sky-studio-abc'
