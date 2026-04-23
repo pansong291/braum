@@ -3,6 +3,10 @@ import { StrictMode, useMemo, useState } from 'react'
 import { FluentProvider, Label, makeStyles, Textarea, tokens, useId, webLightTheme } from '@fluentui/react-components'
 import { toCode } from '@/lib/pan'
 
+if (import.meta.env.PROD) {
+  document.title = '分发管理页'
+}
+
 const useStyles = makeStyles({
   container: {
     maxWidth: '1200px',

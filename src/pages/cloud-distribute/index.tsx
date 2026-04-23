@@ -24,6 +24,10 @@ import { toURL } from '@/lib/pan'
 import GoofishBanner from '@/components/GoofishBanner'
 import AntiDevtool from '@/components/AntiDevtool'
 
+if (import.meta.env.PROD) {
+  document.title = '云分发'
+}
+
 const useStyles = makeStyles({
   container: {
     maxWidth: '500px',

@@ -11,6 +11,10 @@ import { TextDecoder } from 'text-encoding'
 import GoofishBanner from '@/components/GoofishBanner'
 import AntiDevtool from '@/components/AntiDevtool'
 
+if (import.meta.env.PROD) {
+  document.title = '乐谱转换'
+}
+
 const readFile = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
     // 处理二进制文件
