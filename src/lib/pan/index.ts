@@ -1,6 +1,6 @@
 const sequence = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~-_.#'
 
-const linkPrefixes = ['https://pan.baidu.com/s/']
+const linkPrefixes = ['https://pan.quark.cn/s/', 'https://pan.baidu.com/s/']
 
 function charToValue(ch: string): number {
   if (ch) {
