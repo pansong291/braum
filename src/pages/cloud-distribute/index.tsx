@@ -113,13 +113,27 @@ const App = () => {
           <Label htmlFor={authInputId} className={styles.label}>
             认证码
           </Label>
-          <Input id={authInputId} className={styles.input} spellCheck={false} value={authText} onChange={(_, d) => setAuthText(d.value)} />
+          <Input
+            id={authInputId}
+            className={styles.input}
+            spellCheck={false}
+            placeholder="锗雉媞懿塥敆醴迧螫脣翢槑頨韷"
+            value={authText}
+            onChange={(_, d) => setAuthText(d.value)}
+          />
         </div>
         <div>
           <Label htmlFor={pickInputId} className={styles.label}>
             提取码
           </Label>
-          <Input id={pickInputId} className={styles.input} spellCheck={false} value={pickText} onChange={(_, d) => setPickText(d.value)} />
+          <Input
+            id={pickInputId}
+            className={styles.input}
+            spellCheck={false}
+            placeholder="Rd32"
+            value={pickText}
+            onChange={(_, d) => setPickText(d.value)}
+          />
         </div>
         <Button as="button" appearance="primary" onClick={onOkClick} {...okFocusRestore}>
           确定
