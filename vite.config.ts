@@ -14,6 +14,7 @@ type Entry = {
 // 打包结果优先使用别名，开发的时候两者都可以
 const entryAlias: Record<string, string> = {
   'sky-fengxu': 'a5ebbee14749',
+  'sky-hengwu': 'bba12862670c',
   'cloud-distribute': 'APe2vddKooc'
 }
 
